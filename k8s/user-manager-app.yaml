@@ -1,0 +1,68 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: user-manager-app-service-np
+spec:
+  selector:
+    app: user-manager-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-manager-app
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: user-manager-app
+    spec:
+      containers:
+        - name: user-manager-app
+          image: gcr.io/bzhezlo-lohika-k8s-course/user-manager-app-img:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: dbHost
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: dbName
+            - name: GREETING_PREFIX
+              valueFrom:
+                configMapKeyRef:
+                  name: application-config
+                  key: greetingPrefix
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: dbPassword
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 5
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+  selector:
+    matchLabels:
+      app: user-manager-app
+

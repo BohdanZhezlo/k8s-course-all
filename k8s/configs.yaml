@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+  labels:
+    app: user-manager-app
+data:
+  dbHost: user-manager-app-mysql-service
+  dbName: db_k8s_training
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: application-config
+  labels:
+    app: user-manager-app
+data:
+  greetingPrefix: Hello from config

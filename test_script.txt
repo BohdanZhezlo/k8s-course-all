@@ -1,0 +1,16 @@
+kubectl get pods
+./apply_all.sh
+kubectl get pods
+kubectl get svc
+curl "34.68.182.182/HostName"
+curl "34.68.182.182/Users/GetAll"
+curl -XPUT "34.68.182.182/Users/Insert/user1"
+curl -XPUT "34.68.182.182/Users/Insert/user2"
+curl -XPUT "34.68.182.182/Users/Insert/user3"
+curl -XPUT "34.68.182.182/Users/Insert/GetAll"
+kubectl get pods
+kubectl delete pod user-manager-app-mysql-67c99f5dd7-8z54p
+kubectl get pods
+curl "34.68.182.182/Users/GetAll"
+curl -XPUT "34.68.182.182/Users/Insert/user4"
+curl "34.68.182.182/Users/GetAll"

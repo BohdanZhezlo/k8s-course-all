@@ -26,7 +26,7 @@ spec:
       containers:
         - name: user-manager-app
           image: gcr.io/bzhezlo-lohika-k8s-course/user-manager-app-img:v1
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
